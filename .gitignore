@@ -1,0 +1,51 @@
+# --- Trained models (regenerate with `python train.py`) ---------------------
+# outputs/flower_model.keras is ~52 MB, over GitHub's 50 MB warning threshold.
+*.keras
+*.h5
+*.hdf5
+*.pb
+*.tflite
+*.onnx
+saved_model/
+checkpoints/
+
+# The small artifacts in outputs/ and the archived baseline runs (PNGs,
+# metrics.json, train_log.txt) are kept on purpose — the README links to them.
+
+# --- Datasets ---------------------------------------------------------------
+# tf_flowers caches in ~/.keras/datasets, but ignore local copies / your own data.
+flower_photos/
+flower_photos*.tgz
+data/
+datasets/
+my_images/
+
+# --- Python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# --- Editors / OS -----------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+
+# --- Misc -------------------------------------------------------------------
+*.log
+.env
+.env.local

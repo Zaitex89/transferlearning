@@ -1,0 +1,18 @@
+# Versions verified working on the run that produced 95.59% test accuracy
+# (Windows 11, Python 3.10, CPU-only).
+#
+#   pip install -r requirements.txt
+
+tensorflow==2.21.0      # backend; on native Windows this is CPU-only (see note below)
+keras==3.12.1           # model API, MobileNetV2/EfficientNetV2B0 weights
+numpy==2.0.1
+matplotlib==3.10.1      # training curves, confusion matrix, sample grid
+pillow==10.4.0          # JPEG loading for predict.py
+
+# Pulled in automatically by tensorflow, pinned here so a fresh env reproduces exactly:
+h5py==3.14.0
+scipy==1.15.3
+
+# Note on GPU: TensorFlow >= 2.11 has no GPU support on native Windows, so this
+# runs on CPU (~20 min for the full two-stage run on 12 cores). For GPU, use WSL2
+# with `tensorflow[and-cuda]` instead of the plain `tensorflow` pin above.

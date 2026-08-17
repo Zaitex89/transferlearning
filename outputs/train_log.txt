@@ -1,0 +1,106 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1786895493.976434    7600 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1786895495.912087    7600 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+Dataset: C:\Users\Alexb\.keras\datasets\flower_photos.tgz\flower_photos
+Found 3670 files belonging to 5 classes.
+Using 2569 files for training.
+Using 1101 files for validation.
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+Classes (5): daisy, dandelion, roses, sunflowers, tulips
+Backbone: efficientnetv2b0 - 270 layers, 5,919,312 params (frozen)
+Trainable now: 6,405 params (head only)
+
+============================================================
+STAGE 1 - frozen backbone, training the head
+============================================================
+Epoch 1/12
+81/81 - 32s - 393ms/step - accuracy: 0.6598 - loss: 1.0772 - val_accuracy: 0.8366 - val_loss: 0.7640 - learning_rate: 0.0010
+Epoch 2/12
+81/81 - 20s - 253ms/step - accuracy: 0.8291 - loss: 0.7740 - val_accuracy: 0.8833 - val_loss: 0.6905 - learning_rate: 0.0010
+Epoch 3/12
+81/81 - 21s - 255ms/step - accuracy: 0.8653 - loss: 0.7082 - val_accuracy: 0.9013 - val_loss: 0.6660 - learning_rate: 0.0010
+Epoch 4/12
+81/81 - 20s - 244ms/step - accuracy: 0.8723 - loss: 0.6851 - val_accuracy: 0.9031 - val_loss: 0.6472 - learning_rate: 0.0010
+Epoch 5/12
+81/81 - 19s - 234ms/step - accuracy: 0.8793 - loss: 0.6710 - val_accuracy: 0.9048 - val_loss: 0.6371 - learning_rate: 0.0010
+Epoch 6/12
+81/81 - 19s - 239ms/step - accuracy: 0.8953 - loss: 0.6628 - val_accuracy: 0.8959 - val_loss: 0.6268 - learning_rate: 0.0010
+Epoch 7/12
+81/81 - 20s - 247ms/step - accuracy: 0.9031 - loss: 0.6348 - val_accuracy: 0.9066 - val_loss: 0.6203 - learning_rate: 0.0010
+Epoch 8/12
+81/81 - 21s - 253ms/step - accuracy: 0.8914 - loss: 0.6435 - val_accuracy: 0.9048 - val_loss: 0.6161 - learning_rate: 0.0010
+Epoch 9/12
+81/81 - 19s - 241ms/step - accuracy: 0.9058 - loss: 0.6312 - val_accuracy: 0.9066 - val_loss: 0.6127 - learning_rate: 0.0010
+Epoch 10/12
+81/81 - 21s - 255ms/step - accuracy: 0.9132 - loss: 0.6220 - val_accuracy: 0.9066 - val_loss: 0.6091 - learning_rate: 0.0010
+Epoch 11/12
+81/81 - 22s - 266ms/step - accuracy: 0.9194 - loss: 0.6135 - val_accuracy: 0.9120 - val_loss: 0.6042 - learning_rate: 0.0010
+Epoch 12/12
+81/81 - 20s - 252ms/step - accuracy: 0.9116 - loss: 0.6221 - val_accuracy: 0.9084 - val_loss: 0.6065 - learning_rate: 0.0010
+
+============================================================
+STAGE 2 - fine-tuning backbone layers 175-270
+============================================================
+Now trainable: 3,639,333 params
+
+Epoch 1/28
+81/81 - 39s - 482ms/step - accuracy: 0.9151 - loss: 0.6087 - val_accuracy: 0.9120 - val_loss: 0.5942 - learning_rate: 1.0000e-05
+Epoch 2/28
+81/81 - 28s - 343ms/step - accuracy: 0.9245 - loss: 0.5977 - val_accuracy: 0.9228 - val_loss: 0.5866 - learning_rate: 1.0000e-05
+Epoch 3/28
+81/81 - 29s - 363ms/step - accuracy: 0.9315 - loss: 0.5855 - val_accuracy: 0.9264 - val_loss: 0.5794 - learning_rate: 1.0000e-05
+Epoch 4/28
+81/81 - 31s - 377ms/step - accuracy: 0.9303 - loss: 0.5794 - val_accuracy: 0.9300 - val_loss: 0.5754 - learning_rate: 1.0000e-05
+Epoch 5/28
+81/81 - 28s - 345ms/step - accuracy: 0.9432 - loss: 0.5676 - val_accuracy: 0.9282 - val_loss: 0.5712 - learning_rate: 1.0000e-05
+Epoch 6/28
+81/81 - 28s - 340ms/step - accuracy: 0.9404 - loss: 0.5680 - val_accuracy: 0.9282 - val_loss: 0.5664 - learning_rate: 1.0000e-05
+Epoch 7/28
+81/81 - 28s - 345ms/step - accuracy: 0.9420 - loss: 0.5648 - val_accuracy: 0.9318 - val_loss: 0.5629 - learning_rate: 1.0000e-05
+Epoch 8/28
+81/81 - 28s - 343ms/step - accuracy: 0.9451 - loss: 0.5583 - val_accuracy: 0.9300 - val_loss: 0.5604 - learning_rate: 1.0000e-05
+Epoch 9/28
+81/81 - 28s - 347ms/step - accuracy: 0.9510 - loss: 0.5516 - val_accuracy: 0.9336 - val_loss: 0.5566 - learning_rate: 1.0000e-05
+Epoch 10/28
+81/81 - 27s - 339ms/step - accuracy: 0.9432 - loss: 0.5574 - val_accuracy: 0.9336 - val_loss: 0.5537 - learning_rate: 1.0000e-05
+Epoch 11/28
+81/81 - 29s - 357ms/step - accuracy: 0.9482 - loss: 0.5484 - val_accuracy: 0.9354 - val_loss: 0.5512 - learning_rate: 1.0000e-05
+Epoch 12/28
+81/81 - 28s - 342ms/step - accuracy: 0.9502 - loss: 0.5437 - val_accuracy: 0.9354 - val_loss: 0.5482 - learning_rate: 1.0000e-05
+Epoch 13/28
+81/81 - 28s - 342ms/step - accuracy: 0.9568 - loss: 0.5336 - val_accuracy: 0.9354 - val_loss: 0.5460 - learning_rate: 1.0000e-05
+Epoch 14/28
+81/81 - 29s - 357ms/step - accuracy: 0.9630 - loss: 0.5299 - val_accuracy: 0.9390 - val_loss: 0.5446 - learning_rate: 1.0000e-05
+Epoch 15/28
+81/81 - 28s - 342ms/step - accuracy: 0.9630 - loss: 0.5274 - val_accuracy: 0.9372 - val_loss: 0.5414 - learning_rate: 1.0000e-05
+Epoch 16/28
+81/81 - 30s - 364ms/step - accuracy: 0.9599 - loss: 0.5279 - val_accuracy: 0.9425 - val_loss: 0.5397 - learning_rate: 1.0000e-05
+Epoch 17/28
+81/81 - 28s - 344ms/step - accuracy: 0.9591 - loss: 0.5227 - val_accuracy: 0.9425 - val_loss: 0.5380 - learning_rate: 1.0000e-05
+Epoch 18/28
+81/81 - 29s - 353ms/step - accuracy: 0.9638 - loss: 0.5189 - val_accuracy: 0.9443 - val_loss: 0.5357 - learning_rate: 1.0000e-05
+Epoch 19/28
+81/81 - 29s - 357ms/step - accuracy: 0.9607 - loss: 0.5179 - val_accuracy: 0.9443 - val_loss: 0.5337 - learning_rate: 1.0000e-05
+Epoch 20/28
+81/81 - 29s - 353ms/step - accuracy: 0.9657 - loss: 0.5162 - val_accuracy: 0.9425 - val_loss: 0.5324 - learning_rate: 1.0000e-05
+Epoch 21/28
+81/81 - 27s - 339ms/step - accuracy: 0.9646 - loss: 0.5095 - val_accuracy: 0.9408 - val_loss: 0.5316 - learning_rate: 1.0000e-05
+Epoch 22/28
+81/81 - 29s - 355ms/step - accuracy: 0.9654 - loss: 0.5097 - val_accuracy: 0.9425 - val_loss: 0.5297 - learning_rate: 1.0000e-05
+
+============================================================
+EVALUATION on the held-out test split
+============================================================
+
+Test accuracy: 0.9559  (520/544 images)
+
+class          precision   recall  support
+daisy              0.967    0.978       90
+dandelion          0.976    0.984      126
+roses              0.903    0.949       98
+sunflowers         0.974    0.949      118
+tulips             0.954    0.920      112
+
+Saved model -> C:\Users\Alexb\ws\ai-intro-vlad\transferlearning\outputs\flower_model.keras
+Saved plots + metrics -> C:\Users\Alexb\ws\ai-intro-vlad\transferlearning\outputs
