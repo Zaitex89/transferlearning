@@ -9,9 +9,6 @@
 saved_model/
 checkpoints/
 
-# The small artifacts in outputs/ and the archived baseline runs (PNGs,
-# metrics.json, train_log.txt) are kept on purpose — the README links to them.
-
 # --- Datasets ---------------------------------------------------------------
 # tf_flowers caches in ~/.keras/datasets, but ignore local copies / your own data.
 flower_photos/
@@ -49,3 +46,7 @@ desktop.ini
 *.log
 .env
 .env.local
+
+# Run artifacts — every file in here is recreated by `python train.py`
+# (model, both plots, sample grid, metrics.json, train_log.txt).
+outputs/

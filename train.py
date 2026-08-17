@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import pathlib
+import sys
 
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
@@ -58,6 +59,32 @@ def parse_args():
     p.add_argument("--no-finetune", dest="finetune", action="store_false", help="skip stage 2")
     p.add_argument("--seed", type=int, default=1337)
     return p.parse_args()
+
+
+class Tee:
+    """Mirror the console into outputs/train_log.txt, so the log is a run artifact
+    instead of something you have to remember to redirect."""
+
+    def __init__(self, stream, path):
+        self.stream = stream
+        self.file = open(path, "w", encoding="utf-8")
+
+    def write(self, text):
+        self.stream.write(text)
+        self.file.write(text)
+        return len(text)
+
+    def flush(self):
+        self.stream.flush()
+        self.file.flush()
+
+    def isatty(self):
+        # Keras asks this to decide between progress bars and plain lines.
+        return self.stream.isatty()
+
+    @property
+    def encoding(self):
+        return getattr(self.stream, "encoding", "utf-8")
 
 
 def get_data_dir(user_dir):
@@ -144,6 +171,35 @@ def callbacks_for(patience):
     ]
 
 
+def plot_dataset_samples(ds, class_names, per_class=5):
+    """Grid of raw training images, one row per class — what the model actually sees
+    before augmentation. Drawn before training so it survives a crashed run."""
+    examples = {i: [] for i in range(len(class_names))}
+    for images, labels in ds:  # uint8 batches, one-hot labels
+        for image, label in zip(images.numpy(), labels.numpy().argmax(axis=1)):
+            if len(examples[label]) < per_class:
+                examples[label].append(image)
+        if all(len(v) >= per_class for v in examples.values()):
+            break
+
+    fig, axes = plt.subplots(
+        len(class_names), per_class, squeeze=False,
+        figsize=(1.6 * per_class, 1.75 * len(class_names)),
+    )
+    for row, name in enumerate(class_names):
+        for col in range(per_class):
+            ax = axes[row][col]
+            ax.set_xticks([])
+            ax.set_yticks([])
+            if col < len(examples[row]):
+                ax.imshow(examples[row][col])
+        axes[row][0].set_ylabel(name, rotation=0, ha="right", va="center", fontsize=9)
+    fig.suptitle(f"{per_class} examples per class (before augmentation)", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(OUT_DIR / "dataset_samples.png", dpi=120)
+    plt.close(fig)
+
+
 def plot_history(hist_head, hist_ft, split_at):
     fig, axes = plt.subplots(1, 2, figsize=(11, 4))
     for ax, key, title in ((axes[0], "accuracy", "Accuracy"), (axes[1], "loss", "Loss")):
@@ -204,17 +260,14 @@ def evaluate(model, test_ds, class_names):
     return acc, per_class
 
 
-def main():
-    args = parse_args()
-    keras.utils.set_random_seed(args.seed)
-    OUT_DIR.mkdir(exist_ok=True)
-
+def run(args):
     data_dir = get_data_dir(args.data_dir)
     print(f"Dataset: {data_dir}")
     train_ds, val_ds, test_ds, class_names = build_datasets(
         data_dir, args.img_size, args.batch_size, args.seed
     )
     print(f"Classes ({len(class_names)}): {', '.join(class_names)}")
+    plot_dataset_samples(train_ds, class_names)
 
     model, base = build_model(args.img_size, len(class_names), args.backbone)
     trainable = sum(np.prod(w.shape) for w in model.trainable_weights)
@@ -261,7 +314,25 @@ def main():
         "label_smoothing": args.label_smoothing,
     }, indent=2))
     print(f"\nSaved model -> {MODEL_PATH}")
-    print(f"Saved plots + metrics -> {OUT_DIR}")
+    print(f"Saved plots + metrics + log -> {OUT_DIR}")
+
+
+def main():
+    args = parse_args()
+    keras.utils.set_random_seed(args.seed)
+    OUT_DIR.mkdir(exist_ok=True)
+
+    # Tee before anything prints, and keep the log even if the run raises.
+    # stderr goes to the same file so Python-level warnings and tracebacks land in
+    # it too (TF's C++ logs bypass Python and stay console-only).
+    stdout, stderr = sys.stdout, sys.stderr
+    tee = Tee(stdout, OUT_DIR / "train_log.txt")
+    sys.stdout = sys.stderr = tee
+    try:
+        run(args)
+    finally:
+        sys.stdout, sys.stderr = stdout, stderr
+        tee.file.close()
 
 
 if __name__ == "__main__":
