@@ -1,4 +1,4 @@
-# Transfer Learning — Flower Classifier
+# Transfer Learning Flower Classifier
 
 An image classifier built by transfer learning: instead of training a CNN from
 scratch, we reuse MobileNetV2 already trained on ImageNet (1.4M images, 1000
