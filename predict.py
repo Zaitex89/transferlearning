@@ -1,6 +1,5 @@
 """
 Classify images with the trained model.
-
     python predict.py                           # defaults to sample_images/
     python predict.py path/to/photo.jpg
     python predict.py path/to/folder            # every image in it, recursively

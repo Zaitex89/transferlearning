@@ -1,10 +1,6 @@
 """
-Transfer learning image classifier.
-
-Stage 1 (feature extraction): the ImageNet-pretrained MobileNetV2 backbone is
-frozen and only a new classification head is trained.
-Stage 2 (fine-tuning): the top block of the backbone is unfrozen and trained
-with a very small learning rate so the pretrained filters are nudged, not wrecked.
+Stage 1 (feature extraction)
+Stage 2 (fine-tuning)
 
 Default dataset is tf_flowers (5 classes, 3670 photos). Point --data_dir at any
 folder laid out as  data_dir/<class_name>/<image>.jpg  to use your own images.
@@ -62,9 +58,6 @@ def parse_args():
 
 
 class Tee:
-    """Mirror the console into outputs/train_log.txt, so the log is a run artifact
-    instead of something you have to remember to redirect."""
-
     def __init__(self, stream, path):
         self.stream = stream
         self.file = open(path, "w", encoding="utf-8")
@@ -88,7 +81,6 @@ class Tee:
 
 
 def get_data_dir(user_dir):
-    """Return the image root, downloading tf_flowers on first run."""
     if user_dir:
         return pathlib.Path(user_dir)
     archive = keras.utils.get_file(origin=DATA_URL, extract=True, cache_subdir="datasets")
@@ -115,8 +107,8 @@ def build_datasets(data_dir, img_size, batch_size, seed):
         label_mode="categorical",  # one-hot, so the loss can apply label smoothing
     )
     class_names = train_ds.class_names
-    val_ds = holdout_ds.shard(2, 0)  # even batches -> validation (drives early stopping)
-    test_ds = holdout_ds.shard(2, 1)  # odd batches  -> test (touched once, at the end)
+    val_ds = holdout_ds.shard(2, 0)  # even batches results in validation (drives early stopping)
+    test_ds = holdout_ds.shard(2, 1)  # odd batches results in test (touched once, at the end)
 
     def prep(ds):
         # uint8 keeps the RAM cache ~4x smaller; the model rescales to float itself.
@@ -172,8 +164,7 @@ def callbacks_for(patience):
 
 
 def plot_dataset_samples(ds, class_names, per_class=5):
-    """Grid of raw training images, one row per class — what the model actually sees
-    before augmentation. Drawn before training so it survives a crashed run."""
+    """Raw training images. Drawn before training so it survives a crashed run."""
     examples = {i: [] for i in range(len(class_names))}
     for images, labels in ds:  # uint8 batches, one-hot labels
         for image, label in zip(images.numpy(), labels.numpy().argmax(axis=1)):
