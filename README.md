@@ -139,11 +139,4 @@ python train.py --img_size 160             # ~2x faster, slightly lower accuracy
 
 ## Using your own images
 
-Lay them out one folder per class and pass `--data_dir`. Nothing else changes —
-the class count, names and output layer all adapt automatically:
-
-```
-my_images/
-  cats/  img1.jpg ...
-  dogs/  img1.jpg ...
-```
+Add them to `sample_images`
