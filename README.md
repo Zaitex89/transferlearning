@@ -20,7 +20,7 @@ classes), freeze what it learned, and train only a small new head on our own dat
 
 ```bash
 python train.py          # trains both stages, writes everything to outputs/
-python predict.py some_photo.jpg
+python predict.py
 ```
 
 The dataset (218 MB) downloads automatically on the first run and is cached.
